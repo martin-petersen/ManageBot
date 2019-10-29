@@ -1,5 +1,6 @@
 package br.com.managebot;
 
+import br.com.managebot.bot.ManageBot;
 import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ public class DemoApplication {
 
     @Bean
     public TelegramBot telegramBot() {
-        return new TelegramBot();
+        return new ManageBot();
     }
 
 }
