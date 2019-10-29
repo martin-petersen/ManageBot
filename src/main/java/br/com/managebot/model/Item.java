@@ -1,19 +1,13 @@
 package br.com.managebot.model;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import javax.persistence.Entity;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static java.util.Arrays.asList;
 
 @Entity
 public class Item extends AbstractEntity{
     private String location;
     private String category;
     private String item;
+    private String description;
 
 
     public String getLocation() {
@@ -40,5 +34,14 @@ public class Item extends AbstractEntity{
 
     public void setItem(String item) {
         this.item = item;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
