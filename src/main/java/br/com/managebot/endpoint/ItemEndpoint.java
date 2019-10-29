@@ -37,6 +37,16 @@ public class ItemEndpoint {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/byCategory")
+    public ResponseEntity<?> findByCategory(@PathVariable String category) {
+        return new ResponseEntity<>(itemDAO.findByCategory(category), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/byLocation")
+    public ResponseEntity<?> findByLocation(@PathVariable String location) {
+        return new ResponseEntity<>(itemDAO.findByLocation(location), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Item item) {
         return new ResponseEntity<>(itemDAO.save(item),HttpStatus.OK);
