@@ -4,7 +4,6 @@ package br.com.managebot.endpoint;
 import br.com.managebot.error.CustomErroType;
 import br.com.managebot.model.Item;
 import br.com.managebot.repository.ItemRepository;
-import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
