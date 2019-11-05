@@ -1,13 +1,18 @@
 package br.com.managebot.endpoint;
 
 
-import br.com.managebot.error.CustomErroType;
+import br.com.managebot.error.ResourceNorFoundException;
+import br.com.managebot.model.Category;
 import br.com.managebot.model.Item;
+import br.com.managebot.model.Location;
+import br.com.managebot.repository.CategoryRepository;
 import br.com.managebot.repository.ItemRepository;
+import br.com.managebot.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -16,10 +21,14 @@ import java.util.Optional;
 @RequestMapping("items")
 public class ItemEndpoint {
     private final ItemRepository itemDAO;
+    private final CategoryRepository categoryDAO;
+    private final LocationRepository locationDAO;
 
     @Autowired
-    public ItemEndpoint(ItemRepository itemDAO) {
+    public ItemEndpoint(ItemRepository itemDAO, CategoryRepository categoryDAO, LocationRepository locationDAO) {
         this.itemDAO = itemDAO;
+        this.categoryDAO = categoryDAO;
+        this.locationDAO = locationDAO;
     }
 
     @GetMapping
@@ -29,10 +38,8 @@ public class ItemEndpoint {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getItemById(@PathVariable("id") Long id) {
+        verifyID(id);
         Optional<Item> item = itemDAO.findById(id);
-        if(!item.isPresent()) {
-            return new ResponseEntity<>(new CustomErroType("Item not found"), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
@@ -56,30 +63,34 @@ public class ItemEndpoint {
         return new ResponseEntity<>(itemDAO.findByDescription(Description), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/locations")
-    public ResponseEntity<?> listLocations() {
-        return new ResponseEntity<>(itemDAO.listLocations(), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/categories")
-    public ResponseEntity<?> listCategories() {
-        return new ResponseEntity<>(itemDAO.listCategories(), HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Item item) {
+        Category category = categoryDAO.findById(item.getCategory().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Location location = locationDAO.findById(item.getLocation().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        item.setCategory(category);
+        item.setLocation(location);
+
         return new ResponseEntity<>(itemDAO.save(item),HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id) {
+        verifyID(id);
         itemDAO.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Item item) {
+        verifyID(item.getId());
         itemDAO.save(item);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void verifyID(Long id) {
+        if(!itemDAO.findById(id).isPresent()) {
+            throw new ResourceNorFoundException("Item not found for ID: " + id);
+        }
     }
 }

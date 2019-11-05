@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @MappedSuperclass
-public class AbstractEntity implements Serializable {
+public class AbstractCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +17,7 @@ public class AbstractEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbstractEntity that = (AbstractEntity) o;
+        AbstractCategory that = (AbstractCategory) o;
         return Objects.equals(id, that.id);
     }
 

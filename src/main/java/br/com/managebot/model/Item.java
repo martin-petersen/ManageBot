@@ -1,32 +1,34 @@
 package br.com.managebot.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Item extends AbstractEntity{
-    private String location;
-    private String category;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Location location;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Category category;
     private String item;
     private String description;
 
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
-
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
-
 
     public String getItem() {
         return item;
