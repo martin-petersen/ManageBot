@@ -65,8 +65,8 @@ public class ItemEndpoint {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Item item) {
-        Category category = categoryDAO.findById(item.getCategory().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Location location = locationDAO.findById(item.getLocation().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Category category = categoryDAO.findByCategory(item.getCategory().getCategory()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Location location = locationDAO.findByLocation(item.getLocation().getLocation()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         item.setCategory(category);
         item.setLocation(location);

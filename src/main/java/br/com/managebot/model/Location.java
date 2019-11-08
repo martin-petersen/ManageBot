@@ -1,9 +1,11 @@
 package br.com.managebot.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 public class Location extends AbstractLocation{
+    @Column(unique = true)
     private String location;
     private String description;
 

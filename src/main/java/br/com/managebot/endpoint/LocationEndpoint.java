@@ -46,7 +46,6 @@ public class LocationEndpoint {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Location location) {
-        verifyLocation(location.getLocation());
         return new ResponseEntity<>(locationDAO.save(location),HttpStatus.OK);
     }
 
@@ -67,12 +66,6 @@ public class LocationEndpoint {
     private void verifyID(Long id) {
         if(!locationDAO.findById(id).isPresent()) {
             throw new ResourceNorFoundException("Location not found for ID: " + id);
-        }
-    }
-
-    private void verifyLocation(String location) {
-        if(!locationDAO.findByLocation(location).isEmpty()) {
-            throw new AlreadyExistentExcpetion("Location already reported to: " + location);
         }
     }
 }

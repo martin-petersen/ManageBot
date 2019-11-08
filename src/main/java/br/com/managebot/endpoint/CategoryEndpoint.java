@@ -60,12 +60,6 @@ public class CategoryEndpoint {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private void verifyCategory(String category) {
-        if(!categoryDAO.findByCategory(category).isEmpty()) {
-            throw new AlreadyExistentExcpetion("Category already reported to: " + category);
-        }
-    }
-
     private void verifyID(Long id) {
         if(!categoryDAO.findById(id).isPresent()) {
             throw new ResourceNorFoundException("Category not found for ID: " + id);
