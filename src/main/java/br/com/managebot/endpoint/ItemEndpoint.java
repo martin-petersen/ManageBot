@@ -76,8 +76,17 @@ public class ItemEndpoint {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id) {
-        verifyID(id);
-        itemDAO.deleteById(id);
+        try{
+            verifyID(id);
+            Optional<Item> item = itemDAO.findById(id);
+            item.get().setCategory(null);
+            item.get().setLocation(null);
+            update(item.get());
+            itemDAO.deleteById(id);
+        } catch (ResourceNorFoundException e) {
+            e.getMessage();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
