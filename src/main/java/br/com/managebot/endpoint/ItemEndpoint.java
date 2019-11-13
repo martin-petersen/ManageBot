@@ -43,9 +43,15 @@ public class ItemEndpoint {
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/byTombo/{tombo}")
+    public ResponseEntity<?> findByTombo(@PathVariable("tombo") int tombo) {
+        Optional<Item> item = Optional.ofNullable(itemDAO.findByTombo(tombo));
+        return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/byItem/{Item}")
     public ResponseEntity<?> findByItem(@PathVariable String Item) {
-        return new ResponseEntity<>(itemDAO.findByItem(Item), HttpStatus.OK);
+        return new ResponseEntity<>(itemDAO.findByItem("%" + Item.toLowerCase() + "%"), HttpStatus.OK);
     }
 
     @GetMapping(path = "/byCategory/{Category}")
