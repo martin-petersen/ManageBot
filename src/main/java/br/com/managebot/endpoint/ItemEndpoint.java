@@ -56,12 +56,14 @@ public class ItemEndpoint {
 
     @GetMapping(path = "/byCategory/{Category}")
     public ResponseEntity<?> findByCategory(@PathVariable String Category) {
-        return new ResponseEntity<>(itemDAO.findByCategory(Category), HttpStatus.OK);
+        Optional<br.com.managebot.model.Category> category = categoryDAO.findByCategory(Category);
+        return new ResponseEntity<>(itemDAO.findByCategory(category.get()), HttpStatus.OK);
     }
 
     @GetMapping(path = "/byLocation/{Location}")
     public ResponseEntity<?> findByLocation(@PathVariable String Location) {
-        return new ResponseEntity<>(itemDAO.findByLocation(Location), HttpStatus.OK);
+        Optional<br.com.managebot.model.Location> location = locationDAO.findByLocation(Location);
+        return new ResponseEntity<>(itemDAO.findByLocation(location.get()), HttpStatus.OK);
     }
 
     @GetMapping(path = "/byDescription/{Description}")
